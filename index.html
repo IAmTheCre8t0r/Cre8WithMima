@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CraftSync AI | Launch Your Creative Projects</title>
+    <style>
+        /* MOBILE-OPTIMIZED STYLES */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            color: white;
+        }
+        
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .question {
+            margin-bottom: 25px;
+        }
+        
+        .question h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+        
+        .option-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            margin-bottom: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            font-size: 1rem;
+            text-align: left;
+            transition: all 0.2s;
+        }
+        
+        .option-btn:hover, .option-btn.active {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            margin-bottom: 12px;
+        }
+        
+        .textarea-field {
+            width: 100%;
+            padding: 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            min-height: 120px;
+            margin-bottom: 12px;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .nav-btn {
+            padding: 16px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .back-btn {
+            background: #f7fafc;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .next-btn {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .generate-btn {
+            background: linear-gradient(90deg, #4CAF50, #2E7D32);
+            color: white;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+        }
+        
+        .results-card {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .ai-output {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #e2e8f0;
+            border-top: 5px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .footer {
+            text-align: center;
+            color: rgba(255,255,255,0.7);
+            padding: 30px 20px;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 480px) {
+            .header h1 { font-size: 1.8rem; }
+            .card { padding: 20px; }
+            .nav-btn { padding: 14px 25px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>🚀 CraftSync AI</h1>
+            <p>AI-Powered Creative Platform • Launch in Minutes</p>
+        </div>
+        
+        <!-- MAIN FORM CARD -->
+        <div class="card" id="formCard">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 14%"></div>
+            </div>
+            
+            <div id="step1" class="question">
+                <h3>Step 1: What do you need created today?</h3>
+                <button class="option-btn" onclick="selectOption(1, 'Logo Design')">🎨 Logo Design</button>
+                <button class="option-btn" onclick="selectOption(1, 'Marketing Copy')">✍️ Marketing Copy</button>
+                <button class="option-btn" onclick="selectOption(1, 'Social Media Content')">📱 Social Media Content</button>
+                <button class="option-btn" onclick="selectOption(1, 'Blog Article')">📝 Blog Article</button>
+                <button class="option-btn" onclick="selectOption(1, 'Product Description')">🛍️ Product Description</button>
+                <button class="option-btn" onclick="selectOption(1, 'Video Script')">🎬 Video Script</button>
+            </div>
+            
+            <div id="step2" class="question" style="display: none;">
+                <h3>Step 2: What industry are you in?</h3>
+                <input type="text" class="input-field" id="industryInput" placeholder="e.g., Tech Startup, Restaurant, Fashion Brand">
+            </div>
+            
+            <div id="step3" class="question" style="display: none;">
+                <h3>Step 3: What's your brand/company name?</h3>
+                <input type="text" class="input-field" id="brandInput" placeholder="Enter your brand name">
+            </div>
+            
+            <div id="step4" class="question" style="display: none;">
+                <h3>Step 4: Describe what you need in your own words:</h3>
+                <textarea class="textarea-field" id="descriptionInput" placeholder="Be as detailed as possible..."></textarea>
+            </div>
+            
+            <div id="step5" class="question" style="display: none;">
+                <h3>Step 5: What tone should this have?</h3>
+                <button class="option-btn" onclick="selectOption(5, 'Professional')">💼 Professional</button>
+                <button class="option-btn" onclick="selectOption(5, 'Friendly')">😊 Friendly</button>
+                <button class="option-btn" onclick="selectOption(5, 'Luxurious')">✨ Luxurious</button>
+                <button class="option-btn" onclick="selectOption(5, 'Casual')">👕 Casual</button>
+                <button class="option-btn" onclick="selectOption(5, 'Technical')">🔬 Technical</button>
+                <button class="option-btn" onclick="selectOption(5, 'Persuasive')">🎯 Persuasive</button>
+            </div>
+            
+            <div id="step6" class="question" style="display: none;">
+                <h3>Step 6: Who is your target audience?</h3>
+                <input type="text" class="input-field" id="audienceInput" placeholder="e.g., Young professionals, Parents, Tech enthusiasts">
+            </div>
+            
+            <div id="step7" class="question" style="display: none;">
+                <h3>Step 7: Priority: Fast delivery or multiple concepts?</h3>
+                <button class="option-btn" onclick="selectOption(7, 'Fastest possible (24h)')">⚡ Fastest possible (24h)</button>
+                <button class="option-btn" onclick="selectOption(7, 'Balanced (2-3 days)')">⚖️ Balanced (2-3 days)</button>
+                <button class="option-btn" onclick="selectOption(7, 'Multiple concepts (3-5 days)')">🎨 Multiple concepts (3-5 days)</button>
+            </div>
+            
+            <!-- NAVIGATION BUTTONS -->
+            <div class="navigation">
+                <button class="nav-btn back-btn" id="backBtn" onclick="prevStep()" style="display: none;">← Back</button>
+                <button class="nav-btn next-btn" id="nextBtn" onclick="nextStep()">Continue →</button>
+                <button class="nav-btn generate-btn" id="generateBtn" onclick="generateOutput()" style="display: none;">✨ Generate Magic!</button>
+            </div>
+        </div>
+        
+        <!-- LOADING SPINNER -->
+        <div class="card loading" id="loadingCard">
+            <div class="spinner"></div>
+            <h3>CraftSync AI is working...</h3>
+            <p>Analyzing your brief • Generating contract • Preparing output</p>
+        </div>
+        
+        <!-- RESULTS CARD -->
+        <div class="card results-card" id="resultsCard">
+            <h2>✅ Your Project is Ready!</h2>
+            <p>AI Analysis Complete • Contract Generated • Ready to Launch</p>
+            
+            <div class="ai-output">
+                <h4>📋 Project Brief Summary:</h4>
+                <p id="briefSummary">Loading...</p>
+                
+                <h4>🤖 AI Recommendation:</h4>
+                <p id="aiRecommendation">Loading...</p>
+                
+                <h4>📝 Generated Contract Terms:</h4>
+                <p id="contractTerms">Loading...</p>
+                
+                <h4>⏱️ Estimated Timeline:</h4>
+                <p id="timelineEstimate">Loading...</p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="nav-btn generate-btn" onclick="downloadBrief()" style="margin-right: 10px;">📥 Download Brief</button>
+                <button class="nav-btn next-btn" onclick="startNewProject()">Start New Project</button>
+            </div>
+        </div>
+        
+        <!-- FOOTER -->
+        <div class="footer">
+            <p>CraftSync AI • AI-Powered Gig Economy Platform</p>
+            <p>Secure • Fast • Professional Output</p>
+        </div>
+    </div>
+
+    <script>
+        // GLOBAL VARIABLES
+        let currentStep = 1;
+        let formData = {
+            projectType: '',
+            industry: '',
+            brandName: '',
+            description: '',
+            tone: '',
+            targetAudience: '',
+            timeline: ''
+        };
+        
+        // PROGRESS CALCULATION
+        function updateProgress() {
+            const progress = ((currentStep - 1) / 7) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+        }
+        
+        // STEP NAVIGATION
+        function showStep(step) {
+            // Hide all steps
+            for (let i = 1; i <= 7; i++) {
+                document.getElementById(`step${i}`).style.display = 'none';
+            }
+            
+            // Show current step
+            document.getElementById(`step${step}`).style.display = 'block';
+            
+            // Update buttons
+            document.getElementById('backBtn').style.display = step > 1 ? 'block' : 'none';
+            document.getElementById('nextBtn').style.display = step < 7 ? 'block' : 'none';
+            document.getElementById('generateBtn').style.display = step === 7 ? 'block' : 'none';
+            
+            updateProgress();
+        }
+        
+        // OPTION SELECTION
+        function selectOption(step, value) {
+            // Remove active class from all buttons in this step
+            const buttons = document.getElementById(`step${step}`).querySelectorAll('.option-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Store data
+            if (step === 1) formData.projectType = value;
+            if (step === 5) formData.tone = value;
+            if (step === 7) formData.timeline = value;
+        }
+        
+        // NEXT STEP
+        function nextStep() {
+            // Validate and save input fields
+            if (currentStep === 2) {
+                formData.industry = document.getElementById('industryInput').value;
+                if (!formData.industry.trim()) {
+                    alert('Please enter your industry');
+                    return;
+                }
+            }
+            if (currentStep === 3) {
+                formData.brandName = document.getElementById('brandInput').value;
+                if (!formData.brandName.trim()) {
+                    alert('Please enter your brand name');
+                    return;
+                }
+            }
+            if (currentStep === 4) {
+                formData.description = document.getElementById('descriptionInput').value;
+                if (!formData.description.trim()) {
+                    alert('Please describe your project');
+                    return;
+                }
+            }
+            if (currentStep === 6) {
+                formData.targetAudience = document.getElementById('audienceInput').value;
+                if (!formData.targetAudience.trim()) {
+                    alert('Please describe your target audience');
+                    return;
+                }
+            }
+            
+            if (currentStep < 7) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        }
+        
+        // PREVIOUS STEP
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+        
+        // GENERATE OUTPUT (MAIN FUNCTION)
+        function generateOutput() {
+            // Show loading
+            document.getElementById('formCard').style.display = 'none';
+            document.getElementById('loadingCard').style.display = 'block';
+            
+            // Simulate AI processing (3 seconds)
+            setTimeout(() => {
+                // Hide loading, show results
+                document.getElementById('loadingCard').style.display = 'none';
+                document.getElementById('resultsCard').style.display = 'block';
+                
+                // Generate AI outputs
+                generateAIOutputs();
+            }, 3000);
+        }
+        
+        // GENERATE AI OUTPUTS
+        function generateAIOutputs() {
+            // Brief Summary
+            document.getElementById('briefSummary').innerHTML = `
+                <strong>Project:</strong> ${formData.projectType}<br>
+                <strong>Industry:</strong> ${formData.industry}<br>
+                <strong>Brand:</strong> ${formData.brandName}<br>
+                <strong>Tone:</strong> ${formData.tone}<br>
+                <strong>Audience:</strong> ${formData.targetAudience}<br>
+                <strong>Timeline:</strong> ${formData.timeline}
+            `;
+            
+            // AI Recommendation
+            const complexity = Math.floor(Math.random() * 10) + 1;
+            const recommendations = [
+                "AI-Only Path: Our AI can generate 3 concepts within 2 hours. Perfect for rapid iteration.",
+                "Hybrid Approach: AI generates initial concepts, then our top-rated designer refines the best one.",
+                "Human-Expert Path: Based on complexity, we recommend matching with one of our vetted specialists."
+            ];
+            document.getElementById('aiRecommendation').innerHTML = 
+                `<strong>Complexity Level:</strong> ${complexity}/10<br><br>` +
+                recommendations[Math.floor(Math.random() * recommendations.length)];
+            
+            // Contract Terms
+            document.getElementById('contractTerms').innerHTML = `
+                1. Service: ${formData.projectType}<br>
+                2. Deliverables: 3 concepts + 2 rounds of revisions<br>
+                3. Timeline: ${formData.timeline.toLowerCase().includes('24h') ? '24 hours' : formData.timeline.toLowerCase().includes('balanced') ? '2-3 days' : '3-5 days'}<br>
+                4. Payment: $${(complexity * 25).toFixed(2)} (upon approval)<br>
+                5. Rights: Full commercial rights transferred<br>
+                6. Confidentiality: 100% secured (encrypted storage)
+            `;
+            
+            // Timeline
+            document.getElementById('timelineEstimate').innerHTML = `
+                • Brief Analysis: <strong>COMPLETE</strong><br>
+                • Contract Generation: <strong>READY</strong><br>
+                • AI Processing: ${formData.timeline.toLowerCase().includes('24h') ? '2-4 hours' : '1-2 days'}<br>
+                • Delivery: ${formData.timeline}<br>
+                • Revisions: 2 rounds included
+            `;
+        }
+        
+        // DOWNLOAD BRIEF
+        function downloadBrief() {
+            const briefText = `
+CRAFTSYNC AI - PROJECT BRIEF
+=============================
+Project: ${formData.projectType}
+Brand: ${formData.brandName}
+Industry: ${formData.industry}
+Tone: ${formData.tone}
+Target Audience: ${formData.targetAudience}
+Timeline: ${formData.timeline}
+
+DESCRIPTION:
+${formData.description}
+
+CONTRACT TERMS:
+Service: ${formData.projectType}
+Deliverables: 3 concepts + 2 revisions
+Timeline: ${formData.timeline}
+Payment: To be determined
+Rights: Full commercial transfer
+
+Generated on: ${new Date().toLocaleDateString()}
+            `;
+            
+            const blob = new Blob([briefText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `CraftSync-Brief-${formData.brandName}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert('Brief downloaded successfully!');
+        }
+        
+        // START NEW PROJECT
+        function startNewProject() {
+            // Reset everything
+            currentStep = 1;
+            formData = {
+                projectType: '',
+                industry: '',
+                brandName: '',
+                description: '',
+                tone: '',
+                targetAudience: '',
+                timeline: ''
+            };
+            
+            // Reset form fields
+            document.getElementById('industryInput').value = '';
+            document.getElementById('brandInput').value = '';
+            document.getElementById('descriptionInput').value = '';
+            document.getElementById('audienceInput').value = '';
+            
+            // Reset buttons
+            const allButtons = document.querySelectorAll('.option-btn');
+            allButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Show form again
+            document.getElementById('resultsCard').style.display = 'none';
+            document.getElementById('formCard').style.display = 'block';
+            showStep(1);
+        }
+        
+        // INITIALIZE
+        showStep(1);
+        
+        // MOBILE TOUCH ENHANCEMENTS
+        document.addEventListener('touchstart', function() {}, {passive: true});
+        
+        // AUTOSAVE TO LOCALSTORAGE
+        setInterval(() => {
+            if (Object.values(formData).some(value => value)) {
+                localStorage.setItem('craftsync_draft', JSON.stringify(formData));
+            }
+        }, 5000);
+        
+        // LOAD DRAFT IF EXISTS
+        window.addEventListener('load', () => {
+            const draft = localStorage.getItem('craftsync_draft');
+            if (draft) {
+                const confirmLoad = confirm('Found a saved draft. Load it?');
+                if (confirmLoad) {
+                    formData = JSON.parse(draft);
+                    // Populate fields
+                    document.getElementById('industryInput').value = formData.industry || '';
+                    document.getElementById('brandInput').value = formData.brandName || '';
+                    document.getElementById('descriptionInput').value = formData.description || '';
+                    document.getElementById('audienceInput').value = formData.targetAudience || '';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
